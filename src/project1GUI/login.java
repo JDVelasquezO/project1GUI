@@ -1,6 +1,6 @@
 package project1GUI;
 
-import java.awt.event.KeyEvent;
+import project1GUI.Admin.AdminHome;
 
 /**
  *
@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
  */
 public class login extends javax.swing.JFrame {
     
-    String name, pass;
+    private String name, pass, category;
 
     /**
      * Creates new form login
@@ -51,6 +51,11 @@ public class login extends javax.swing.JFrame {
         jLabel3.setText("Contraseña");
 
         txtPass.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        txtPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPassActionPerformed(evt);
+            }
+        });
 
         jButton1.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         jButton1.setText("Ingresar");
@@ -131,14 +136,24 @@ public class login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         name = txtName.getText();
         pass = txtPass.getText();
-        Auth auth = new Auth(name, pass);
+        category = (String) jComboBox1.getSelectedItem();
+        Auth auth = new Auth(name, pass, category);
         
-        if (auth.toString().equals("JD 123")) {
-            System.out.println("Bienvenido");
-        } else {
-            System.out.println("No eres bievenido");
+        if (category == "Administrador") {
+            
+            if (auth.toString().equals("JD 123")) {
+                AdminHome adminHome = new AdminHome();
+                this.setVisible(false);
+                adminHome.setVisible(true);
+            } else {
+                System.out.println("No eres bievenido");
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassActionPerformed
+        
+    }//GEN-LAST:event_txtPassActionPerformed
 
     /**
      * @param args the command line arguments
