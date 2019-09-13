@@ -1,6 +1,6 @@
-package project1GUI;
+package login;
 
-import project1GUI.Admin.AdminHome;
+import admin.AdminHome;
 
 /**
  *
