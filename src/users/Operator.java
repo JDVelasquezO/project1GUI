@@ -10,6 +10,6 @@ public class Operator extends User {
     }
     
     public Operator() {
-        super();
+        this("JD", "1234", "Jose", "Velasquez");
     }
 }

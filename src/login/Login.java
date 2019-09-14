@@ -1,22 +1,37 @@
 package login;
 
+import admin.Admin;
 import admin.AdminHome;
+import javax.swing.JFrame;
+import users.Operator;
+import users.OperatorHome;
+import users.User;
 
 /**
  *
  * @author JD
  */
-public class login extends javax.swing.JFrame {
+public class Login extends javax.swing.JFrame {
     
     private String name, pass, category;
 
     /**
      * Creates new form login
      */
-    public login() {
+    public Login() {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Login");
+    }
+    
+    public void evaluateFields(String toEvaluate, Auth auth, User user, JFrame frame) {
+        toEvaluate = user.getUserName() + " " + user.getPass();
+        if (auth.toString().equals(toEvaluate)) {
+            this.setVisible(false);
+            frame.setVisible(true);
+        } else {
+            System.out.println("No eres bievenido");
+        }
     }
 
     /**
@@ -36,6 +51,7 @@ public class login extends javax.swing.JFrame {
         txtPass = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,6 +84,14 @@ public class login extends javax.swing.JFrame {
         jComboBox1.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Operador", "Piloto", "Cliente" }));
 
+        jButton2.setFont(new java.awt.Font("Calibri Light", 0, 12)); // NOI18N
+        jButton2.setText("Salir");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -91,7 +115,9 @@ public class login extends javax.swing.JFrame {
                             .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(108, 108, 108)
-                        .addComponent(jButton1)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(80, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -110,7 +136,9 @@ public class login extends javax.swing.JFrame {
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49)
                 .addComponent(jButton1)
-                .addGap(0, 79, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(19, 19, 19))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -134,26 +162,31 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String toEvaluate = "";
         name = txtName.getText();
         pass = txtPass.getText();
         category = (String) jComboBox1.getSelectedItem();
         Auth auth = new Auth(name, pass, category);
         
         if (category == "Administrador") {
-            
-            if (auth.toString().equals("JD 123")) {
-                AdminHome adminHome = new AdminHome();
-                this.setVisible(false);
-                adminHome.setVisible(true);
-            } else {
-                System.out.println("No eres bievenido");
-            }
+            Admin admin = new Admin();
+            AdminHome adminHome = new AdminHome();
+            evaluateFields(toEvaluate, auth, admin, adminHome);
+        } else if (category == "Operador") {
+            Operator operator = new Operator();
+            OperatorHome opHome = new OperatorHome();
+            evaluateFields(toEvaluate, auth, operator, opHome);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassActionPerformed
         
     }//GEN-LAST:event_txtPassActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.setVisible(false);
+        System.exit(0);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -172,26 +205,28 @@ public class login extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new login().setVisible(true);
+                new Login().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
