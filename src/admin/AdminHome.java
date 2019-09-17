@@ -6,6 +6,8 @@
 package admin;
 
 import countries.Countries;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JOptionPane;
 import login.Login;
 
@@ -26,6 +28,44 @@ public class AdminHome extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setTitle("Inicio - Administrador");
         setAdminData(adminFirst);
+        
+        eventBack();
+    }
+    
+    public void logout() {
+        int answer = JOptionPane.showConfirmDialog(null, "¿Estás seguro que deseas salir?");
+        
+        if (answer == 0) {
+            this.setVisible(false);
+            Login login = new Login();
+            login.setVisible(true);
+        }
+    }
+    
+    public void eventBack() {
+        KeyListener evt = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    logout();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        };
+        
+        jButton1.addKeyListener(evt);
+        jButton2.addKeyListener(evt);
+        jButton3.addKeyListener(evt);
+        jButton4.addKeyListener(evt);
+        jButton5.addKeyListener(evt);
+        jButton6.addKeyListener(evt);
     }
 
     /**
@@ -56,7 +96,7 @@ public class AdminHome extends javax.swing.JFrame {
         jLabel1.setText("Bienvenido");
 
         jButton1.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
-        jButton1.setText("Paises e localidades");
+        jButton1.setText("Paises y localidades");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -156,13 +196,7 @@ public class AdminHome extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        int answer = JOptionPane.showConfirmDialog(null, "¿Estás seguro que deseas salir?");
-        
-        if (answer == 0) {
-            this.setVisible(false);
-            Login login = new Login();
-            login.setVisible(true);
-        }
+        logout();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

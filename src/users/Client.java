@@ -13,7 +13,7 @@ public class Client extends User{
     }
 
     public Client() {
-        super();
+        this("Client", "123", "Cliente", "Velasquez", "4555");
     }
 
     public void setCreditCard(String creditCard) { this.creditCard = creditCard; }

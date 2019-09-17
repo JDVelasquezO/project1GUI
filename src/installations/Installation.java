@@ -34,6 +34,6 @@ public abstract class Installation {
 
     @Override
     public String toString() {
-        return "El " + type + " " + name + " fue creada satisfactoriamente";
+        return "\t\tEl " + type + " " + name + " fue creado satisfactoriamente";
     }
 }

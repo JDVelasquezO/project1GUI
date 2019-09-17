@@ -14,7 +14,7 @@ public class Pilot extends User {
     }
     
     public Pilot() {
-        super();
+        this("Pilot", "123", "Piloto", "Vela", "Bus", 1500);
     }
 
     public void setType(String type) { this.type = type; }
