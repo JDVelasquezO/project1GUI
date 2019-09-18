@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package admin;
 
 import countries.Country;
@@ -17,40 +12,42 @@ import javax.swing.tree.DefaultTreeModel;
  * @author JD
  */
 public class JTreeExample extends javax.swing.JFrame {
+
     DefaultMutableTreeNode selectedNode;
     DefaultTreeModel model;
-    
+
     Installation installation;
     Installation installation2;
     Location location;
     Country country;
-    
+    Country[] countries;
+
     /**
      * Creates new form JTreeExample
      */
     public JTreeExample() {
         initComponents();
         setLocationRelativeTo(null);
-        
+
         installation = new Airport("Denver", "Aeropuerto");
         installation2 = new Airport("Car", "Estacionamiento");
-        
-        location = new Location(2, "Mixco");
+
+        location = new Location(3, "Mixco");
         location.addInstallation(installation);
         location.addInstallation(installation2);
-        
+
         country = new Country(502, "Guatemala", 1);
         country.addLocations(location);
-        
+
         doTree();
     }
-    
+
     public void doTree() {
         DefaultMutableTreeNode tree = new DefaultMutableTreeNode();
 
-        Country[] countries = new Country[1];
+        countries = new Country[1];
         countries[0] = country;
-        
+
         for (int i = 0; i < countries.length; i++) {
             if (countries[i] == null) {
                 continue;
@@ -77,8 +74,6 @@ public class JTreeExample extends javax.swing.JFrame {
                 }
             }
         }
-        
-        System.out.println(countries[0]);
         jTree1.setModel(new DefaultTreeModel(tree));
     }
 
@@ -174,13 +169,34 @@ public class JTreeExample extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        selectedNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
-        if (selectedNode != null) {
-            selectedNode.insert(new DefaultMutableTreeNode(jTextField1.getText()), 
-                    selectedNode.getIndex(selectedNode.getLastChild()));
-            model.reload();
+        try {
+            String name = jTextField1.getText();
+            selectedNode = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
+
+            for (int i = 0; i < countries.length; i++) {
+                for (int j = 0; j < countries[i].getLocation().length; j++) {
+                    if (selectedNode.getParent().toString().equalsIgnoreCase(countries[i].getLocation()[j].getName())) {
+                        for (int k = 0; k < countries[i].getLocation()[j].getInstalations().length; k++) {
+                            if (countries[i].getLocation()[j].getInstalations()[k] == null) {
+                                countries[i].getLocation()[j].getInstalations()[k] = new Airport(name, "Aeropuerto");
+                                doTree();
+                                break;
+                            } else {
+                                continue;
+                            }
+                        }
+                    } else {
+                        continue;
+                    }
+                }
+            }
+            
+            jTextField1.setText("");
+        } catch (Exception e) {
+            System.out.println("Error");
         }
-        jTextField1.setText("");
+
+        //System.out.println(country);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
