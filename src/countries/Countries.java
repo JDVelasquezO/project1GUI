@@ -11,90 +11,81 @@ import installations.Installation;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JOptionPane;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author JD
  */
 public class Countries extends javax.swing.JFrame {
-    
-    private int postalCode;
-    private String countryName;
-    
-    DefaultMutableTreeNode selectedNode;
-    DefaultTreeModel model;
-    
-    Installation installation;
-    Installation installation2;
-    Location location;
-    Country country;
+    DefaultTableModel model;
+    DefaultTableModel table;
+    Country[] countries;
+    String[][] data = {};
+    String[] header = {
+        "Codigo",
+        "Nombre"
+    };
 
     /**
      * Creates new form Countries
      */
     public Countries() {
         initComponents();
+        model = new DefaultTableModel(data, header);
+        jTable1.setModel(model);
         
-        name.requestFocus();
+        txtCode.requestFocus();
+        
+        showDataTable();
         
         eventBack();
         eventEnter();
         
-        installation = new Airport("Denver", "Aeropuerto");
-        installation2 = new Airport("Car", "Estacionamiento");
-        
-        location = new Location(2, "Mixco");
-        location.addInstallation(installation);
-        location.addInstallation(installation2);
-        
-        country = new Country(502, "Guatemala", 1);
-        country.addLocations(location);
-        
-        doTree();
+        //doTable();
         
         setLocationRelativeTo(null);
         setTitle("Países - Administrador");
     }
     
-    public void doTree() {
-        DefaultMutableTreeNode tree = new DefaultMutableTreeNode();
-
-        Country[] countries = new Country[1];
+    public void showDataTable() {
+        table = (DefaultTableModel) jTable1.getModel();
+        countries = new Country[10];
+        table.setRowCount(0);
+        
+        countries[0] = new Country(502, "Guatemala", 0);
+        
+        String[] data = {
+           countries[0].getName(),
+           Integer.toString(countries[0].getCode())
+        };
+        
+        table.addRow(data);
+    }
+    
+    public void insertInTable() {
+        table = (DefaultTableModel) jTable1.getModel();
+        table.setRowCount(0);
+        
+        String name = txtName.getText();
+        String code = txtCode.getText();
         
         for (int i = 0; i < countries.length; i++) {
-            countries[i] = country;
+            countries[i] = new Country(Integer.parseInt(code), name, 0);
         }
         
         for (int i = 0; i < countries.length; i++) {
-            if (countries[i] == null) {
-                continue;
-            } else {
-                DefaultMutableTreeNode root = new DefaultMutableTreeNode(countries[i].getName());
-                for (int j = 0; j < countries[i].getLocation().length; j++) {
-                    if (countries[i].getLocation()[j] == null) {
-                        continue;
-                    } else {
-                        DefaultMutableTreeNode locationNode = new DefaultMutableTreeNode(countries[i].getLocation()[j].getName());
-                        root.add(locationNode);
-                        for (int k = 0; k < countries[i].getLocation()[j].getInstalations().length; k++) {
-                            if (countries[i].getLocation()[j].getInstalations()[k] == null) {
-                                continue;
-                            } else {
-                                DefaultMutableTreeNode installationNode
-                                        = new DefaultMutableTreeNode(countries[i].getLocation()[j]
-                                                .getInstalations()[k].getName());
-                                locationNode.add(installationNode);
-                                tree.add(root);
-                            }
-                        }
-                    }
-                }
-            }
+           Object[] newData = {
+               countries[i].getName(),
+               Integer.toString(countries[i].getCode())
+           }; 
+           
+           table.addRow(newData);
         }
         
-        jTree2.setModel(new DefaultTreeModel(tree));
+        txtCode.setText("");
+        txtName.setText("");
+        txtCode.requestFocus();
     }
     
     public void goToAdminHome() {
@@ -139,7 +130,9 @@ public class Countries extends javax.swing.JFrame {
         };
         
         jButton2.addKeyListener(evt);
-        name.addKeyListener(evt);
+        jButton3.addKeyListener(evt);
+        txtCode.addKeyListener(evt);
+        txtName.addKeyListener(evt);
     }
     
     public void eventEnter() {
@@ -151,8 +144,12 @@ public class Countries extends javax.swing.JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                /*if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     valueToAdd();
+                }*/
+                
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    insertInTable();
                 }
             }
 
@@ -162,7 +159,10 @@ public class Countries extends javax.swing.JFrame {
             }
         };
         
-        name.addKeyListener(evt);
+        jButton2.addKeyListener(evt);
+        jButton3.addKeyListener(evt);
+        txtCode.addKeyListener(evt);
+        txtName.addKeyListener(evt);
     }
 
     /**
@@ -177,26 +177,27 @@ public class Countries extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
         jButton3 = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTree2 = new javax.swing.JTree();
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        name = new javax.swing.JTextField();
+        txtCode = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        txtName = new javax.swing.JTextField();
 
         jScrollPane1.setViewportView(jTree1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jButton3.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
         jButton3.setText("Agregar");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
-
-        jScrollPane2.setViewportView(jTree2);
 
         jLabel1.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
         jLabel1.setText("Países con localidades actuales: ");
@@ -210,39 +211,54 @@ public class Countries extends javax.swing.JFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
-        jLabel2.setText("Nombre:");
+        jLabel2.setText("Codigo:");
 
-        name.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        txtCode.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
 
+        jButton1.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
         jButton1.setText("Quitar");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane3.setViewportView(jTable1);
+
+        jLabel3.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        jLabel3.setText("Nombre:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jButton3)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGap(194, 194, 194)
+                            .addComponent(jButton2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(40, 40, 40)
+                                .addComponent(txtCode))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jButton1)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
+                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButton3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton1))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(45, 45, 45)
-                                        .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)))
-                                .addGap(203, 203, 203)))))
-                .addContainerGap())
+                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,16 +268,20 @@ public class Countries extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jButton1))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -269,8 +289,8 @@ public class Countries extends javax.swing.JFrame {
 
     
     public void resetForm() {
-        name.setText("");
-        name.requestFocus();
+        txtCode.setText("");
+        txtCode.requestFocus();
     }
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -278,7 +298,7 @@ public class Countries extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        goToLocation();
+        insertInTable();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -292,7 +312,7 @@ public class Countries extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -322,11 +342,13 @@ public class Countries extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTree jTree1;
-    private javax.swing.JTree jTree2;
-    private javax.swing.JTextField name;
+    private javax.swing.JTextField txtCode;
+    private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 
 }
